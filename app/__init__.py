@@ -1,0 +1,1 @@
+"""fsc-vehicle-microservice application."""
