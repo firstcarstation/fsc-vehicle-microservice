@@ -20,7 +20,14 @@ class VehicleDocument(Base):
         nullable=False,
     )
 
-    doc_type = Column(SAEnum(VehicleDocEnum, name="vehicle_doc_enum"), nullable=False)
+    doc_type = Column(
+        SAEnum(
+            VehicleDocEnum,
+            name="vehicle_doc_enum",
+            values_callable=lambda e: [m.value for m in e],
+        ),
+        nullable=False,
+    )
     doc_url = Column(String, nullable=False)
     expiry_date = Column(Date, nullable=True)
 

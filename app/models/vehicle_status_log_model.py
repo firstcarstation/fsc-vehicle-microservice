@@ -20,7 +20,14 @@ class VehicleStatusLog(Base):
         nullable=False,
     )
 
-    status = Column(SAEnum(VehicleStatusEnum, name="vehicle_status_enum"), nullable=False)
+    status = Column(
+        SAEnum(
+            VehicleStatusEnum,
+            name="vehicle_status_enum",
+            values_callable=lambda e: [m.value for m in e],
+        ),
+        nullable=False,
+    )
 
     # External reference to the User MS.
     changed_by = Column(UUID(as_uuid=True), nullable=False)

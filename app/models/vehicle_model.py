@@ -22,13 +22,27 @@ class Vehicle(Base):
     brand = Column(String(100), nullable=False)
     year = Column(Integer, nullable=True)
 
-    fuel_type = Column(SAEnum(FuelTypeEnum, name="fuel_type_enum"), nullable=False)
+    fuel_type = Column(
+        SAEnum(
+            FuelTypeEnum,
+            name="fuel_type_enum",
+            values_callable=lambda e: [m.value for m in e],  # store lowercase values
+        ),
+        nullable=False,
+    )
 
     plate_number = Column(String(20), unique=True, nullable=False)
     vin_number = Column(String(50), nullable=True)
     color = Column(String(50), nullable=True)
 
-    status = Column(SAEnum(VehicleStatusEnum, name="vehicle_status_enum"), nullable=False)
+    status = Column(
+        SAEnum(
+            VehicleStatusEnum,
+            name="vehicle_status_enum",
+            values_callable=lambda e: [m.value for m in e],  # store lowercase values
+        ),
+        nullable=False,
+    )
 
     is_primary = Column(Boolean, nullable=False, default=False, server_default=text("false"))
 
@@ -47,6 +61,11 @@ class Vehicle(Base):
     )
     status_logs = relationship(
         "VehicleStatusLog",
+        back_populates="vehicle",
+        cascade="all, delete-orphan",
+    )
+    positions = relationship(
+        "VehiclePosition",
         back_populates="vehicle",
         cascade="all, delete-orphan",
     )

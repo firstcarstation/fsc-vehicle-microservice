@@ -49,6 +49,10 @@ def upgrade() -> None:
         create_type=True,
     )
     vehicle_doc_enum.create(op.get_bind(), checkfirst=True)
+    # Prevent SQLAlchemy from attempting to CREATE TYPE again during table creation.
+    fuel_type_enum.create_type = False
+    vehicle_status_enum.create_type = False
+    vehicle_doc_enum.create_type = False
 
     op.create_table(
         "vehicles",
